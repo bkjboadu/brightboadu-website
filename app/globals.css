@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-accent: var(--font-accent);
+}
+
+:root {
+  --font-sans:
+    "Avenir Next", "Segoe UI", "Helvetica Neue", "Nimbus Sans", sans-serif;
+  --font-display:
+    "Satoshi", "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
+  --font-accent:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --background: #f8fafc;
+  --foreground: #08111f;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --border: rgba(15, 23, 42, 0.1);
+  --card: rgba(255, 255, 255, 0.74);
+  --card-foreground: #0f172a;
+  --primary: #0f766e;
+  --primary-foreground: #f8fafc;
+  --secondary: rgba(255, 255, 255, 0.75);
+  --secondary-foreground: #0f172a;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #e2e8f0;
+  --muted: rgba(30, 41, 59, 0.7);
+  --muted-foreground: #94a3b8;
+  --border: rgba(148, 163, 184, 0.14);
+  --card: rgba(15, 23, 42, 0.7);
+  --card-foreground: #e2e8f0;
+  --primary: #2dd4bf;
+  --primary-foreground: #042f2e;
+  --secondary: rgba(15, 23, 42, 0.72);
+  --secondary-foreground: #e2e8f0;
+}
+
+* {
+  @apply border-border;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-foreground;
+}
+
+a,
+button,
+input,
+textarea {
+  @apply outline-none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
