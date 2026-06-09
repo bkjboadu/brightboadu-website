@@ -22,30 +22,41 @@ export function ContactSection() {
     event.preventDefault();
     setState({ status: "loading", message: "" });
 
-    const formData = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
+    try {
+      const formData = new FormData(event.currentTarget);
+      const payload = Object.fromEntries(formData.entries());
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
-    const result = (await response.json()) as { message?: string; error?: string };
+      const result = (await response.json()) as {
+        message?: string;
+        error?: string;
+      };
 
-    if (!response.ok) {
+      if (!response.ok) {
+        setState({
+          status: "error",
+          message: result.error ?? "Unable to send your message right now."
+        });
+        return;
+      }
+
+      event.currentTarget.reset();
+      setState({
+        status: "success",
+        message: result.message ?? "Message sent successfully."
+      });
+    } catch {
       setState({
         status: "error",
-        message: result.error ?? "Unable to send your message right now."
+        message:
+          "The message could not be sent because the network request failed. Please try again."
       });
-      return;
     }
-
-    event.currentTarget.reset();
-    setState({
-      status: "success",
-      message: result.message ?? "Message sent successfully."
-    });
   }
 
   return (

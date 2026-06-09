@@ -38,35 +38,43 @@ export async function POST(request: Request) {
     }
 
     const resendApiKey = process.env.RESEND_API_KEY;
-    const contactEmail = process.env.CONTACT_EMAIL ?? "hello@brightboadu.com";
+    const contactEmail = process.env.CONTACT_EMAIL;
 
-    if (resendApiKey) {
-      const resendResponse = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${resendApiKey}`
+    if (!resendApiKey || !contactEmail) {
+      return NextResponse.json(
+        {
+          error:
+            "Contact delivery is not configured yet. Please try again later."
         },
-        body: JSON.stringify({
-          from: "Bright Boadu Portfolio <onboarding@resend.dev>",
-          to: [contactEmail],
-          reply_to: email,
-          subject: `New portfolio inquiry from ${name}`,
-          text: `Name: ${name}
+        { status: 503 }
+      );
+    }
+
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${resendApiKey}`
+      },
+      body: JSON.stringify({
+        from: "Bright Boadu Portfolio <onboarding@resend.dev>",
+        to: [contactEmail],
+        reply_to: email,
+        subject: `New portfolio inquiry from ${name}`,
+        text: `Name: ${name}
 Email: ${email}
 Company: ${company || "Not provided"}
 
 Message:
 ${message}`
-        })
-      });
+      })
+    });
 
-      if (!resendResponse.ok) {
-        return NextResponse.json(
-          { error: "Message could not be delivered right now. Please try again." },
-          { status: 502 }
-        );
-      }
+    if (!resendResponse.ok) {
+      return NextResponse.json(
+        { error: "Message could not be delivered right now. Please try again." },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({
