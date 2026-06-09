@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${resendApiKey}`
       },
       body: JSON.stringify({
-        from: "Bright Boadu Portfolio <onboarding@resend.dev>",
+        from: "Bright Boadu Portfolio <contact@send.brightboadu.com>",
         to: [contactEmail],
         reply_to: email,
         subject: `New portfolio inquiry from ${name}`,
