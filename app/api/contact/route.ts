@@ -71,6 +71,13 @@ ${message}`
     });
 
     if (!resendResponse.ok) {
+      const resendErrorText = await resendResponse.text();
+      console.error("Resend delivery failed", {
+        status: resendResponse.status,
+        statusText: resendResponse.statusText,
+        body: resendErrorText
+      });
+
       return NextResponse.json(
         { error: "Message could not be delivered right now. Please try again." },
         { status: 502 }
